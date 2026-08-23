@@ -26,27 +26,20 @@ PACMAN_PACKAGES=(
     cava
     btop
     thunar
-
     wl-clipboard
     cliphist
-
     pipewire
     wireplumber
-
     brightnessctl
     hypridle
     hyprlock
-
     networkmanager
     bluez
     bluez-utils
-
     lm_sensors
     libnotify
-
     polkit
     hyprpolkitagent
-
     ttf-jetbrains-mono-nerd
 )
 
@@ -60,16 +53,16 @@ AUR_PACKAGES=(
 
 print_header() {
     clear
-    printf '\n'
-    printf '╭──────────────────────────────────────╮\n'
-    printf '│     Arch + Hyprland Dotfiles         │\n'
-    printf '╰──────────────────────────────────────╯\n'
-    printf '\n'
+    echo
+    echo "╭──────────────────────────────────────╮"
+    echo "│     Arch + Hyprland Dotfiles         │"
+    echo "╰──────────────────────────────────────╯"
+    echo
 }
 
 pause() {
-    printf '\nPress Enter to continue...'
-    read -r
+    echo
+    read -r -p "Press Enter to continue..."
 }
 
 is_arch() {
@@ -110,7 +103,6 @@ install_aur_packages() {
     echo "Install these packages manually:"
     printf '  - %s\n' "${AUR_PACKAGES[@]}"
     echo
-    echo "Recommended AUR helper: yay or paru."
 }
 
 backup_component() {
@@ -118,10 +110,23 @@ backup_component() {
     local target="$CONFIG_DIR/$component"
 
     if [[ -e "$target" ]]; then
-        mkdir -p "$BACKUP_DIR"
         echo "Backup: $target"
-        cp -a "$target" "$BACKUP_DIR/$component"
+
+        if ! mkdir -p "$BACKUP_DIR"; then
+            echo "✗ Failed to create backup directory."
+            return 1
+        fi
+
+        if ! cp -a "$target" "$BACKUP_DIR/$component"; then
+            echo "✗ Failed to backup $component."
+            echo "Installation aborted to protect your existing config."
+            return 1
+        fi
+
+        echo "✓ Backup successful: $component"
     fi
+
+    return 0
 }
 
 install_component() {
@@ -131,20 +136,47 @@ install_component() {
 
     if [[ ! -d "$source" ]]; then
         echo "⚠ Skipping $component: not found in repository."
-        return
+        return 0
     fi
 
-    backup_component "$component"
+    if ! backup_component "$component"; then
+        echo "✗ Installation of $component aborted."
+        return 1
+    fi
 
-    rm -rf "$target"
-    cp -a "$source" "$target"
+    if ! rm -rf "$target"; then
+        echo "✗ Failed to remove existing $component config."
+        return 1
+    fi
+
+    if ! cp -a "$source" "$target"; then
+        echo "✗ Failed to install $component."
+
+        rm -rf "$target"
+
+        if [[ -e "$BACKUP_DIR/$component" ]]; then
+            echo "Attempting automatic restore..."
+
+            if cp -a "$BACKUP_DIR/$component" "$target"; then
+                echo "✓ Previous $component config restored."
+            else
+                echo "✗ Automatic restore failed."
+                echo "Backup is still available at:"
+                echo "  $BACKUP_DIR/$component"
+            fi
+        fi
+
+        return 1
+    fi
 
     echo "✓ Installed $component"
+    return 0
 }
 
 install_all_configs() {
     echo
-    echo "==> Backing up existing configs..."
+    echo "==> Installing configs..."
+    echo
     echo "Backup directory:"
     echo "  $BACKUP_DIR"
     echo
@@ -177,12 +209,10 @@ generate_colors() {
     if [[ ! -f "$HOME/.cache/wal/colors-waybar.css" ]]; then
         echo
         echo "⚠ Pywal colors have not been generated yet."
-        echo "Waybar styling requires:"
-        echo "  ~/.cache/wal/colors-waybar.css"
         echo
-        echo "After installation, generate colors from a wallpaper:"
+        echo "Generate them with:"
         echo
-        echo '  wal -i /path/to/wallpaper.jpg'
+        echo "  wal -i /path/to/wallpaper.jpg"
     else
         echo "✓ Existing Pywal palette found."
     fi
@@ -190,7 +220,7 @@ generate_colors() {
 
 enable_services() {
     echo
-    echo "==> Enabling useful services..."
+    echo "==> Enabling services..."
 
     sudo systemctl enable NetworkManager.service 2>/dev/null || true
     sudo systemctl enable bluetooth.service 2>/dev/null || true
@@ -270,8 +300,12 @@ restore_backup() {
     for component in "${COMPONENTS[@]}"; do
         if [[ -e "$selected/$component" ]]; then
             rm -rf "$CONFIG_DIR/$component"
-            cp -a "$selected/$component" "$CONFIG_DIR/$component"
-            echo "✓ Restored $component"
+
+            if cp -a "$selected/$component" "$CONFIG_DIR/$component"; then
+                echo "✓ Restored $component"
+            else
+                echo "✗ Failed to restore $component"
+            fi
         fi
     done
 }
@@ -290,7 +324,7 @@ full_install() {
     echo "  • install the dotfiles"
     echo "  • enable NetworkManager/Bluetooth"
     echo
-    echo "Nothing outside the listed config folders will be deleted."
+    echo "Existing configs are backed up before replacement."
     echo
 
     read -r -p "Continue? [y/N] " answer
