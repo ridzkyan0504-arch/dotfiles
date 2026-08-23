@@ -25,11 +25,13 @@ A clean and minimal desktop setup featuring **Hyprland, Waybar, Kitty, Neovim, R
 
 ---
 
-## 📸 Screenshots
+---## 📸 Screenshot
 
-Screenshots coming soon.
+![Arch Linux + Hyprland Rice](assets/desktop.png)
 
----
+<p align="center">
+  <b>Arch Linux • Hyprland • Waybar • Kitty • btop</b>
+</p>
 
 ## 📁 Structure
 
