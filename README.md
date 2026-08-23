@@ -62,7 +62,7 @@ Each folder corresponds to a configuration inside:
 Clone the repository:
 
 ```bash
-git clone https://github.com/ridzkyan0504-arch/dotfiles.git ~/dotfiles
+git clone https://github.com/kianlabs/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ```
 
