@@ -2,13 +2,15 @@
 
 My personal **Arch Linux + Hyprland** dotfiles.
 
-A clean and minimal desktop setup with dynamic colors, custom Waybar, Neovim, Rofi, Kitty, Mako, and Cava.
+A clean and minimal desktop setup featuring **Hyprland, Waybar, Kitty, Neovim, Rofi, Mako, Cava**, and dynamic colors powered by **Matugen / Pywal**.
 
 > [!WARNING]
-> These are my personal configuration files.  
-> Back up your existing configs before using them.
+> These are my personal configuration files.
+> The installer automatically creates backups before replacing existing configs, but reviewing the configuration before installation is still recommended.
 
-## ✨ Setup
+---
+
+## ✨ Components
 
 | Component | Application |
 |---|---|
@@ -19,7 +21,15 @@ A clean and minimal desktop setup with dynamic colors, custom Waybar, Neovim, Ro
 | 🚀 Launcher | Rofi |
 | 🔔 Notifications | Mako |
 | 🎵 Audio Visualizer | Cava |
-| 🎨 Colors | Matugen / Pywal |
+| 🎨 Dynamic Colors | Matugen / Pywal |
+
+---
+
+## 📸 Screenshots
+
+Screenshots coming soon.
+
+---
 
 ## 📁 Structure
 
@@ -31,16 +41,143 @@ dotfiles/
 ├── mako/
 ├── nvim/
 ├── rofi/
-└── waybar/
+├── waybar/
+└── install.sh
 ```
 
-Each folder corresponds to a configuration inside `~/.config/`.
+Each folder corresponds to a configuration inside:
 
-## 📦 Requirements
+```text
+~/.config/
+```
 
-This setup is primarily made for **Arch Linux + Hyprland**.
+---
 
-Main packages:
+# 🚀 Installation
+
+## Automatic Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/ridzkyan0504-arch/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+```
+
+Make the installer executable:
+
+```bash
+chmod +x install.sh
+```
+
+Run:
+
+```bash
+./install.sh
+```
+
+The installer provides an interactive menu:
+
+```text
+1) Full installation
+2) Install one component
+3) Install dependencies only
+4) Check dependencies
+5) Restore backup
+0) Exit
+```
+
+### Full Installation
+
+Option `1` installs the required packages and copies all available dotfiles.
+
+Existing configurations are backed up automatically before being replaced.
+
+Backups are stored in:
+
+```text
+~/.config-backups/
+```
+
+For example:
+
+```text
+~/.config-backups/dotfiles-20260823-193606/
+```
+
+If a backup operation fails, installation of that component is aborted before the existing configuration is removed.
+
+---
+
+## 🧩 Install Individual Components
+
+You don't need to install the entire setup.
+
+Run:
+
+```bash
+./install.sh
+```
+
+Then choose:
+
+```text
+2) Install one component
+```
+
+Available components:
+
+```text
+1) Hyprland
+2) Waybar
+3) Kitty
+4) Neovim
+5) Rofi
+6) Mako
+7) Cava
+```
+
+This is useful if you only want a specific part of the rice.
+
+---
+
+## ♻️ Restore Backup
+
+The installer can restore configurations created by previous installations.
+
+Run:
+
+```bash
+./install.sh
+```
+
+Choose:
+
+```text
+5) Restore backup
+```
+
+Then select the backup you want to restore.
+
+Backups are located at:
+
+```text
+~/.config-backups/
+```
+
+---
+
+# 📦 Requirements
+
+This setup is primarily designed for:
+
+```text
+Arch Linux + Hyprland
+```
+
+The installer handles the main dependencies automatically.
+
+Core applications include:
 
 ```text
 hyprland
@@ -50,9 +187,10 @@ neovim
 rofi
 mako
 cava
+thunar
 ```
 
-Additional utilities used by some features:
+Additional utilities used by the configuration include:
 
 ```text
 wl-clipboard
@@ -62,55 +200,46 @@ brightnessctl
 hypridle
 hyprlock
 hyprshot
-thunar
+NetworkManager
+bluez
+lm_sensors
+libnotify
+btop
 ```
 
-A **Nerd Font** is recommended for icons.
+Some optional features also use:
 
-## 🚀 Installation
+```text
+Matugen
+Pywal
+Awww
+Quickshell
+```
 
-Clone this repository:
+A **Nerd Font** is recommended for proper icon rendering.
+
+---
+
+# 🎨 Dynamic Colors
+
+The setup supports dynamic color generation using:
+
+- Matugen
+- Pywal
+
+Generated palette/cache files are intentionally not stored in this repository because they are machine and wallpaper specific.
+
+If a Pywal palette has not been generated yet, run:
 
 ```bash
-git clone https://github.com/ridzkyan0504-arch/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+wal -i /path/to/wallpaper.jpg
 ```
 
-### ⚠️ Backup your configs first
+Some applications can then follow the generated color palette.
 
-Do not overwrite your entire `~/.config` directory.
+---
 
-For example, to install Waybar:
-
-```bash
-mv ~/.config/waybar ~/.config/waybar.backup 2>/dev/null || true
-cp -r ~/dotfiles/waybar ~/.config/waybar
-```
-
-For Hyprland:
-
-```bash
-mv ~/.config/hypr ~/.config/hypr.backup 2>/dev/null || true
-cp -r ~/dotfiles/hypr ~/.config/hypr
-```
-
-The same method can be used for:
-
-- Kitty
-- Neovim
-- Rofi
-- Mako
-- Cava
-
-## 🎨 Dynamic Colors
-
-This setup uses **Matugen / Pywal** integration to generate colors based on the current wallpaper.
-
-The generated color/cache files are not included in this repository because they are machine and wallpaper specific.
-
-Some applications can automatically follow the generated color palette.
-
-## ⌨️ Keybinds
+# ⌨️ Keybinds
 
 | Keybind | Action |
 |---|---|
@@ -130,17 +259,19 @@ Some applications can automatically follow the generated color palette.
 | `SHIFT + Print` | Screenshot region |
 | `SUPER + Print` | Screenshot window |
 
-See:
+The complete configuration is available at:
 
 ```text
 hypr/configs/keybinds.lua
 ```
 
-for the complete keybind configuration.
+---
 
-## ✏️ Neovim
+# ✏️ Neovim
 
-My Neovim setup uses **lazy.nvim** and includes:
+The included Neovim configuration uses **lazy.nvim**.
+
+Features include:
 
 - LSP support
 - Treesitter
@@ -152,56 +283,161 @@ My Neovim setup uses **lazy.nvim** and includes:
 - Matugen / Base16 colors
 - Catppuccin Mocha fallback
 
-## 🎵 Cava
+Launch Neovim with:
+
+```bash
+nvim
+```
+
+Plugins will be handled by the Neovim configuration.
+
+---
+
+# 📊 Waybar
+
+Waybar provides information such as:
+
+- Workspaces
+- CPU usage
+- Memory usage
+- Storage
+- CPU temperature
+- Audio volume
+- Bluetooth
+- Network
+- Active window
+- Clock
+- Cava visualizer
+
+Configuration:
+
+```text
+waybar/config.jsonc
+waybar/style.css
+```
+
+---
+
+# 🎵 Cava
 
 Cava is used as the audio visualizer.
 
-The repository includes configurations for both normal Cava usage and Waybar integration.
+The repository includes configuration for:
 
-## 🛡️ Safety
+```text
+cava/config
+cava/waybar.conf
+```
 
-Before using these dotfiles:
+Waybar integration is handled through:
 
-1. Back up your current configs.
-2. Install the required packages.
-3. Install a compatible Nerd Font.
-4. Review the Hyprland autostart configuration.
-5. Review the keybinds.
-6. Install configs individually if you already have a customized system.
+```text
+~/.config/waybar/scripts/cava.sh
+```
 
-Never blindly delete your entire config directory:
+---
+
+# 🔔 Notifications
+
+Mako is used as the Wayland notification daemon.
+
+Configuration:
+
+```text
+mako/config
+```
+
+Test notifications with:
+
+```bash
+notify-send "Hello" "Notifications are working!"
+```
+
+---
+
+# 🛡️ Safety
+
+The installer is designed to protect existing configurations.
+
+Before replacing a component it performs:
+
+```text
+Existing config
+      ↓
+Create backup
+      ↓
+Verify backup succeeded
+      ↓
+Remove old config
+      ↓
+Install new config
+```
+
+If installation fails after the previous config was removed, the installer attempts to restore the backup automatically.
+
+Still, never blindly delete your entire configuration directory:
 
 ```bash
 rm -rf ~/.config
 ```
 
-## 🔄 Updating
+---
 
-To update your local clone:
+# 🛠️ Manual Installation
+
+If you don't want to use the installer, individual configs can be installed manually.
+
+Example for Waybar:
+
+```bash
+mv ~/.config/waybar ~/.config/waybar.backup 2>/dev/null || true
+cp -a ~/dotfiles/waybar ~/.config/waybar
+```
+
+Example for Kitty:
+
+```bash
+mv ~/.config/kitty ~/.config/kitty.backup 2>/dev/null || true
+cp -a ~/dotfiles/kitty ~/.config/kitty
+```
+
+The same approach can be used for other components.
+
+---
+
+# 🔄 Updating
+
+Update your local clone:
 
 ```bash
 cd ~/dotfiles
 git pull
 ```
 
-Check local modifications first:
+Check modifications before updating:
 
 ```bash
 git status
 ```
 
-## 📸 Screenshots
+If you've modified the configs locally, review the changes before pulling.
 
-Screenshots coming soon.
+---
 
-## 📝 Notes
+# 🤝 Contributing
 
-This repository contains my personal Arch Linux + Hyprland configuration.
+This repository contains my personal configuration, but suggestions and improvements are welcome.
 
-The setup will continue to change as I customize and improve it.
+Feel free to open an issue or submit a pull request.
 
-Feel free to use individual parts as inspiration for your own rice.
+---
 
-## 📜 License
+# ⭐ Support
+
+If you find this setup useful, consider giving the repository a star.
+
+---
+
+# 📜 License
 
 No license has been added yet.
