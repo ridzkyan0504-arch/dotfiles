@@ -1,0 +1,128 @@
+@import url('../../.cache/wal/colors-waybar.css');
+
+@define-color background transparent;
+
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 13px;
+    font-weight: bold;
+    min-height: 0;
+    border: none;
+}
+
+window#waybar {
+    all: unset;
+    background-color: @background;
+    color: @color7;
+}
+
+.modules-left {
+    margin-top: 9px;
+    margin-left: 12px;
+}
+
+.modules-center {
+    margin-top: 9px;
+}
+
+.modules-right {
+    margin-top: 9px;
+    margin-right: 12px;
+}
+
+#custom-logo,
+#hardware,
+#clock,
+#status,
+#system,
+#custom-power,
+#workspaces,
+#custom-cava {
+    background-color: @color0;
+    color: @color7;
+    border-radius: 999px;
+    margin: 0 4px;
+}
+
+#custom-logo {
+    padding: 4px 8px;
+    font-size: 13px;
+}
+
+#hardware {
+    padding: 4px 9px;
+}
+
+#battery,
+#cpu,
+#memory {
+    color: @color7;
+    padding: 0 5px;
+}
+
+#workspaces {
+    padding: 3px 9px;
+}
+
+#workspaces button {
+    all: unset;
+    min-width: 8px;
+    padding: 0 2px;
+    margin: 0 2px;
+    color: @color7;
+}
+
+#workspaces button label {
+    font-size: 9px;
+}
+
+#workspaces button.active {
+    color: @color1;
+}
+
+#custom-cava {
+    padding: 4px 10px;
+}
+
+#clock {
+    padding: 4px 14px;
+}
+
+#status {
+    padding: 4px 8px;
+}
+
+#wireplumber,
+#bluetooth,
+#window,
+#network {
+    color: @color7;
+    padding: 0 5px;
+}
+
+#system {
+    padding: 4px 8px;
+}
+
+#custom-storage,
+#custom-temp {
+    color: @color7;
+    padding: 0 5px;
+}
+
+#custom-power {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+tooltip {
+    background-color: @color0;
+    color: @color7;
+    border: 1px solid @color8;
+    border-radius: 8px;
+}
+
+tooltip label {
+    color: @color7;
+    padding: 5px;
+}
