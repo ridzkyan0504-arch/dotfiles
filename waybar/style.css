@@ -35,6 +35,7 @@ window#waybar {
 #clock,
 #status,
 #system,
+#custom-coffee,
 #custom-power,
 #workspaces,
 #custom-cava {
@@ -45,8 +46,12 @@ window#waybar {
 }
 
 #custom-logo {
-    padding: 4px 8px;
+    min-width: 26px;
+    padding: 4px 8px 4px 6px;
     font-size: 13px;
+    font-family: "JetBrainsMono Nerd Font";
+    font-style: normal;
+    font-weight: normal;
 }
 
 #hardware {
@@ -110,9 +115,33 @@ window#waybar {
     padding: 0 5px;
 }
 
+#custom-coffee {
+    min-width: 26px;
+    padding: 4px 10px 4px 4px;
+    font-size: 13px;
+    font-family: "Font Awesome 7 Free";
+    font-style: normal;
+    font-weight: 900;
+    transition: all 0.2s ease;
+}
+
+/* Normal — autosuspend aktif */
+#custom-coffee.inactive {
+    color: @color7;
+}
+
+/* Coffee Mode — autosuspend mati */
+#custom-coffee.active {
+    color: @color1;
+}
+
 #custom-power {
-    padding: 4px 8px;
+    min-width: 26px;
+    padding: 4px 8px 4px 6px;
     font-size: 12px;
+    font-family: "Font Awesome 7 Free";
+    font-style: normal;
+    font-weight: 900;
 }
 
 tooltip {

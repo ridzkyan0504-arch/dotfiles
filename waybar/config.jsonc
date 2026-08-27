@@ -19,6 +19,7 @@
     "modules-right": [
         "group/status",
         "group/system",
+        "custom/coffee",
         "custom/power"
     ],
 
@@ -137,6 +138,14 @@
         "exec": "sensors 2>/dev/null | awk '/Package id 0:/ {gsub(/[+°C]/,\"\",$4); print int($4); exit}'",
         "interval": 5,
         "tooltip": false
+    },
+
+    "custom/coffee": {
+        "exec": "$HOME/.config/waybar/scripts/coffee-mode.sh",
+        "return-type": "json",
+        "interval": 2,
+        "on-click": "$HOME/.config/waybar/scripts/coffee-mode.sh toggle",
+        "tooltip": true
     },
 
     "custom/power": {
